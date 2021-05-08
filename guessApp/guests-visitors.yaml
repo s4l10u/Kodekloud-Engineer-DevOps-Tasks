@@ -1,0 +1,166 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: redis-master
+  name: redis-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-master
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: redis-master
+    spec:
+      containers:
+      - image: redis
+        name:  master-redis-datacenter
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m" 
+
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: redis-master
+  name: redis-master
+spec:
+  ports:
+  - name: "6379"
+    port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: redis-master
+  type: ClusterIP
+status:
+  loadBalancer: {}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: redis-slave
+  name: redis-slave
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: redis-slave
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: redis-slave
+    spec:
+      containers:
+      - image: gcr.io/google_samples/gb-redisslave:v3
+        name:  slave-redis-datacenter
+        ports:
+        - containerPort: 6379
+        env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m" 
+
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: redis-slave
+  name: redis-slave
+spec:
+  ports:
+  - name: "6379"
+    port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: redis-slave
+  type: ClusterIP
+status:
+  loadBalancer: {}
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: frontend
+  name: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - image: gcr.io/google_samples/gb-frontend:v4
+        name:  php-redis-datacenter
+        ports:
+        - containerPort: 80
+        env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m" 
+
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: frontend
+  name: frontend
+spec:
+  ports:
+  - name: "80"
+    nodePort: 30009
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: frontend
+  type: NodePort
+status:
+  loadBalancer: {}

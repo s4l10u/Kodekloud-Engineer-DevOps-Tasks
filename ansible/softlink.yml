@@ -1,0 +1,47 @@
+- hosts: stapp01
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Create empty file
+    file:
+      path: /opt/security/blog.txt
+      state: touch
+      owner: tony
+      group: tony
+  - name: Create Symbolic link
+    file:
+      src: /opt/security
+      dest: /var/www/html
+      state: link
+
+- hosts: stapp02
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Create empty file
+    file:
+      path:  /opt/security/story.txt
+      state: touch
+      owner: steve
+      group: steve
+  - name: Create Symbolic link
+    file:
+      src:  /opt/security
+      dest: /var/www/html
+      state: link
+
+- hosts: stapp03
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Create empty file
+    file:
+      path:  /opt/dba/media.txt
+      state: touch
+      owner: banner
+      group: banner
+  - name: Create Symbolic link
+    file:
+      src:  /opt/dba
+      dest: /var/www/html
+      state: link

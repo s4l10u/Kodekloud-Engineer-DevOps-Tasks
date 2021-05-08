@@ -1,0 +1,59 @@
+- hosts: stapp03
+  become: yes
+  become_user: root
+  tasks:
+  - name: Install apache packages
+    yum:
+      name: httpd
+      state: present
+
+  - name: Install php packages
+    yum:
+      name: php
+      state: present
+
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /var/www/html/myroot
+      state: directory
+      recurse: yes
+      owner: apache
+      group: apache
+
+  - name: Document root
+    ansible.builtin.lineinfile:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^DocumentRoot "/var/www/html"'
+      line: DocumentRoot "/var/www/html/myroot"
+
+  - name:  copy file to remote server
+    copy:
+      src: ~/playbooks/templates/phpinfo.php.j2
+      dest: /var/www/html/myroot/phpinfo.php
+
+  - file:
+      path: /var/www/html/myroot/phpinfo.php
+      state: touch
+      owner: apache
+      group: apache
+
+  - name: ensure httpd is running
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

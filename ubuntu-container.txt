@@ -1,0 +1,2 @@
+docker pull ubuntu:latest
+docker run -d --name apps -t -i -v /opt/itadmin:/tmp ubuntu:latest /bin/bash

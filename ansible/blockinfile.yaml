@@ -1,0 +1,28 @@
+- hosts: appserver
+  become: yes
+  become_user: root
+  tasks:
+  - name: Install apache packages
+    yum:
+      name: httpd
+      state: present
+  - name: ensure httpd is running
+    service:
+      name: httpd
+      state: started
+  - file:
+      path: /var/www/html/index.html
+      state: touch
+      owner: apache
+      group: apache
+      mode: 0644
+
+  - name: Ansible Insert multiple lines using blockinfile
+    blockinfile:
+      dest: /var/www/html/index.html
+      block: |
+        Welcome to XfusionCorp!
+
+        This is Nautilus sample file, created using Ansible!
+
+        Please do not modify this file manually!

@@ -1,0 +1,45 @@
+- hosts: stapp03
+  become: yes
+  become_user: root
+  tasks:
+  - name: Install apache packages
+    yum:
+      name: httpd
+      state: present
+
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /var/www/html/myroot
+      state: directory
+      recurse: yes
+      owner: apache
+      group: apache
+
+
+  - ansible.builtin.template:
+      src: /mytemplates/foo.j2
+      dest: /etc/file.conf
+      owner: apache
+      group: apache
+      mode: 0756
+
+  - name: ensure httpd is running
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

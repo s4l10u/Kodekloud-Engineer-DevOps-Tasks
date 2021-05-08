@@ -1,0 +1,47 @@
+
+- hosts: stapp01
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Create a tar.gz archive
+    archive:
+      path: /usr/src/itadmin/
+      dest: /opt/itadmin/media.tar.gz
+      format: gz
+  - name:  change owner
+    file:
+      path: /opt/itadmin/media.tar.gz
+      owner: tony
+      group: tony
+
+- hosts: stapp02
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Create a tar.gz archive
+    archive:
+      path: /usr/src/itadmin/
+      dest: /opt/itadmin/media.tar.gz
+      format: gz
+  - name:  change owner
+    file:
+      path: /opt/itadmin/media.tar.gz
+      owner: steve
+      group: steve
+
+- hosts: stapp03
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Create a tar.gz archive
+    archive:
+      path: /usr/src/itadmin/
+      dest: /opt/itadmin/media.tar.gz
+      format: gz
+
+  - name:  change owner
+    file:
+      path: /opt/itadmin/media.tar.gz
+      owner: banner
+      group: banner
+

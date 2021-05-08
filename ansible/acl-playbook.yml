@@ -1,0 +1,53 @@
+- hosts: stapp01
+  become: yes
+  become_user: root
+  tasks:
+  - name: Create file on stapp01
+    file:
+      path: /opt/security/blog.txt
+      state: touch
+      owner: root
+      group: root
+  - name: setting permissions user
+    acl:
+      path: /opt/security/blog.txt
+      entity: tony
+      etype: group
+      permissions: r
+      state: present
+
+- hosts: stapp02
+  become: yes
+  become_user: root
+  tasks:
+  - name: Create file on stapp02
+    file:
+      path: /opt/security/story.txt
+      state: touch
+      owner: root
+      group: root
+  - name: setting permissions on directory and user
+    acl:
+      path: /opt/security/story.txt
+      entity: steve
+      etype: user
+      permissions: rw
+      state: present
+
+- hosts: stapp03
+  become: yes
+  become_user: root
+  tasks:
+  - name: Create file on stapp03
+    file:
+      path: /opt/security/media.txt
+      state: touch
+      owner: root
+      group: root
+  - name: setting permissions on and user
+    acl:
+      path: /opt/security/media.txt
+      entity: banner
+      etype: group
+      permissions: rw
+      state: present

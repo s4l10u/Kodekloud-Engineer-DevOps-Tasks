@@ -1,0 +1,8 @@
+- hosts: appserver
+  become: yes
+  become_user: root
+  tasks:
+  - name: Ansible copy file to remote server
+    copy:
+      src: /usr/src/itadmin/index.html 
+      dest: /opt/itadmin
