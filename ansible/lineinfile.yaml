@@ -1,0 +1,30 @@
+- hosts: all
+  become: yes
+  become_user: root
+  tasks:
+  - name: Install apache packages
+    yum:
+      name: httpd
+      state: present
+  - name: ensure httpd is running
+    service:
+      name: httpd
+      state: started
+
+  - name: Create blank file and add contents to it
+    copy:
+      dest: "/var/www/html/index.html"
+      content: |
+        This is a Nautilus sample file, created using Ansible!
+
+  - file:
+      path: /var/www/html/index.html
+      owner: apache
+      group: apache
+      mode: 0755
+
+  - name: Add a line to a file if the file does not exist, without passing regexp
+    lineinfile:
+      path: /var/www/html/index.html
+      line: Welcome to Nautilus Group!
+      insertbefore: BOF
