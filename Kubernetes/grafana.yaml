@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: grafana-deployment-devops
+    name: grafana
+  name: grafana-deployment-devops
+  namespace: grafana-monitoring-devops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana-deployment-devops
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: grafana-deployment-devops
+    spec:
+      containers:
+      - image: grafana/grafana:latest
+        name:  grafana-container-devops
+        ports:
+        - containerPort: 3000
+
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+
+        volumeMounts:
+        - mountPath: /var/lib/grafana
+          name:  grafana-storage
+      volumes:
+      - name:  grafana-storage
+        emptyDir: {}
+status: {}
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: grafana-service-devops
+  name: grafana-service-devops
+  namespace: grafana-monitoring-devops
+spec:
+  ports:
+  - name: "3000"
+    nodePort: 32000
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: grafana-deployment-devops
+  type: NodePort
+status:
+  loadBalancer: {}
+
