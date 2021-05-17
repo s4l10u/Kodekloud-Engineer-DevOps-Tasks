@@ -1,0 +1,35 @@
+- hosts: stapp01
+  become: yes
+  become_user: root
+  tasks:
+  - name: Create empty file
+    file:
+      path: /opt/webapp.txt
+      state: touch
+      owner: tony
+      group: tony
+      mode: 0655
+
+- hosts: stapp02
+  become: yes
+  become_user: root
+  tasks:
+  - name: Create empty file
+    file:
+      path: /opt/webapp.txt
+      state: touch
+      owner: steve
+      group: steve
+      mode: 0655
+
+- hosts: stapp03
+  become: yes
+  become_user: root
+  tasks:
+  - name: Create empty file
+    file:
+      path: /opt/webapp.txt
+      state: touch
+      owner: banner
+      group: banner
+      mode: 0655

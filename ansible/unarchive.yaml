@@ -1,0 +1,55 @@
+
+- hosts: stapp01
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Unzip /usr/src/sysops/xfusion.zip archive in /opt/sysops/ location 
+    unarchive:
+      src: /usr/src/sysops/xfusion.zip
+      dest: /opt/sysops/ 
+    
+  - name:  change owner data permissions
+    file:
+      path: /opt/sysops/
+      state: directory
+      recurse: yes
+      owner: tony
+      group: tony
+      mode: 0744
+
+- hosts: stapp02
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Unzip /usr/src/sysops/xfusion.zip archive in /opt/sysops/ location
+    unarchive:
+      src: /usr/src/sysops/xfusion.zip
+      dest: /opt/sysops/ 
+    
+  - name:  change owner
+    file:
+      path: /opt/sysops/
+      state: directory
+      recurse: yes
+      owner: steve
+      group: steve
+      mode: 0744
+
+- hosts: stapp03
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Unzip /usr/src/sysops/xfusion.zip archive in /opt/sysops/ location
+    unarchive:
+      src: /usr/src/sysops/xfusion.zip
+      dest: /opt/sysops/ 
+    
+  - name:  change owner
+    file:
+      path: /opt/sysops/
+      state: directory
+      recurse: yes
+      owner: banner
+      group: banner
+      mode: 0744
+
