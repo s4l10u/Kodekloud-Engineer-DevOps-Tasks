@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx-phpfpm
+  name: nginx-phpfpm
+spec:
+  containers:
+  - image: nginx:latest
+    name: nginx-container
+    volumeMounts:
+    - mountPath: /var/www/html
+      name: shared-files
+    - mountPath: /etc/nginx/nginx.conf
+      name: nginx-config-volume
+      subPath: nginx.conf
+
+  - image: php:7.2-fpm
+    name: php-fpm-container
+    volumeMounts:
+    - mountPath: /var/www/html
+      name: shared-files
+
+
+
+  volumes:
+  - name: shared-files
+    emptyDir: {}
+
+  - name: nginx-config-volume
+    configMap:
+      name: nginx-config
