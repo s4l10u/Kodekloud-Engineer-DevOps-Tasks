@@ -1,0 +1,32 @@
+
+### stapp01
+
+echo Ir0nM@n | sudo -S yum -y install httpd
+echo Ir0nM@n | sudo -S systemctl start httpd
+echo Ir0nM@n | sudo -S sed -i "s/80/8082/g" /etc/httpd/conf/httpd.conf
+echo Ir0nM@n | sudo -S systemctl reload httpd
+
+
+### stapp02
+
+echo Am3ric@ | sudo -S yum -y install httpd
+echo Am3ric@ | sudo -S systemctl start httpd
+echo Am3ric@ | sudo -S sed -i "s/80/8082/g" /etc/httpd/conf/httpd.conf
+echo Am3ric@ | sudo -S systemctl reload httpd
+
+
+### stapp03
+
+echo BigGr33n | sudo -S yum -y install httpd
+echo BigGr33n | sudo -S systemctl restart httpd
+echo BigGr33n | sudo -S sed -i "s/80/8082/g" /etc/httpd/conf/httpd.conf
+echo BigGr33n | sudo -S systemctl reload httpd
+
+### Automatic trigger
+
+https://2886795296-8081-kitek06o.environments.katacoda.com/gitea-webhook/post?job=nautilus-app-deployment
+
+
+### SCP 
+sourc: **/*
+destination  /data

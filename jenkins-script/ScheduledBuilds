@@ -6,3 +6,4 @@ echo BigGr33n | sudo -S yum install sshpass -y
 
 sshpass -p "Bl@kW" scp -o 'StrictHostKeyChecking=no' ~/access_log natasha@ststor01:/usr/src/sysops
 sshpass -p "Bl@kW" scp -o 'StrictHostKeyChecking=no' ~/error_log natasha@ststor01:/usr/src/sysops
+
