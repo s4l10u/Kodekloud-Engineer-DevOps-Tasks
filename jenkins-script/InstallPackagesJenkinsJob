@@ -1,0 +1,30 @@
+echo Ir0nM@n | sudo -S  yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm 
+echo Ir0nM@n | sudo -S  yum -y install epel-release yum-utils
+echo Ir0nM@n | sudo -S  yum-config-manager --enable remi-php72
+echo Ir0nM@n | sudo -S  yum -y install php php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json
+echo Ir0nM@n | sudo -S yum -y install httpd
+echo Ir0nM@n | sudo -S systemctl start httpd
+echo Ir0nM@n | sudo -S sed -i "s/80/8082/g" /etc/httpd/conf/httpd.conf
+echo Ir0nM@n | sudo -S systemctl reload httpd
+
+
+
+echo Am3ric@ | sudo -S  yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm 
+echo Am3ric@ | sudo -S  yum -y install epel-release yum-utils
+echo Am3ric@ | sudo -S  yum-config-manager --enable remi-php72
+echo Am3ric@ | sudo -S  yum -y install php php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json
+echo Am3ric@ | sudo -S yum -y install httpd
+echo Am3ric@ | sudo -S systemctl start httpd
+echo Am3ric@ | sudo -S sed -i "s/80/8082/g" /etc/httpd/conf/httpd.conf
+echo Am3ric@ | sudo -S systemctl reload httpd
+
+
+
+echo BigGr33n | sudo -S  yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm 
+echo BigGr33n | sudo -S  yum -y install epel-release yum-utils
+echo BigGr33n | sudo -S  yum-config-manager --enable remi-php72
+echo BigGr33n | sudo -S  yum -y install php php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json
+echo BigGr33n | sudo -S yum -y install httpd
+echo BigGr33n | sudo -S systemctl restart httpd
+echo BigGr33n | sudo -S sed -i "s/80/8082/g" /etc/httpd/conf/httpd.conf
+echo BigGr33n | sudo -S systemctl reload httpd
