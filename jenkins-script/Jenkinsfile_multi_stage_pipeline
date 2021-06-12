@@ -1,0 +1,40 @@
+pipeline {
+
+    agent {
+        node {
+            label 'ststor01'
+        }
+    }
+    
+
+    stages {
+
+      stage('Deploy') {
+            steps {
+                echo 'Deployment'
+                    sh ''' 
+                     cp  -r   * /data
+                    '''
+                    } 
+                }
+               
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+                sh '''
+                    LOCAL=$(cat  index.html)
+                    APP_SERVER=$(curl http://172.16.238.14)
+                    if [ "$LOCAL" = "$APP_SERVER" ]; then
+                    echo "versions are equal"
+                    else
+                    echo "version are not equal"
+                     exit 1
+                    fi
+                '''
+            }
+        }
+
+  
+    }
+}
+

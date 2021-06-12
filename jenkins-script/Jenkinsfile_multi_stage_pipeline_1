@@ -1,0 +1,50 @@
+pipeline {
+
+    agent {
+        node {
+            label 'ststor01'
+        }
+    }
+    
+
+    stages {
+
+      stage('Deploy') {
+            steps {
+                echo 'Deployment'
+                    sh ''' 
+                     cp  -r   * /data
+                    '''
+                    } 
+                }
+       
+            
+      stage('Test') {
+                environment {
+                    // Update the below value as per the text given in question
+                    INDEX_CONTENT = 'Welcome to xFusionCorp Industries'
+                }
+
+                steps {
+                    // Now test that the content from default page from HTTPD on each 
+                    // of the appservers is same as the index.html content required as
+                    // per question
+                    sh '((curl http://stapp01:8080/ | grep -F "$INDEX_CONTENT") && true)'
+                    sh '((curl http://stapp02:8080/ | grep -F "$INDEX_CONTENT") && true)'
+                    sh '((curl http://stapp03:8080/ | grep -F "$INDEX_CONTENT") && true)'
+                }
+            }
+
+          
+        
+
+  
+    }
+
+
+
+
+}
+
+
+
