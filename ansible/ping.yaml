@@ -1,0 +1,5 @@
+- hosts: appserver
+
+  tasks:
+  - name: Ansible ping to remote server
+    ping:
