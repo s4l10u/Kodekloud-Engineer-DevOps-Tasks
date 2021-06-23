@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: httpd-deploy
+  name: httpd-deploy
+  namespace: devops
+spec:
+  replicas: 7
+  selector:
+    matchLabels:
+      app: httpd-deploy
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 2
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: httpd-deploy
+    spec:
+      containers:
+      - image: httpd:2.4.25
+        name: httpd
+        resources: {}
+status: {}

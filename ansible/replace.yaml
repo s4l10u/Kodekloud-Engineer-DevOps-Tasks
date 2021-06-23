@@ -1,0 +1,30 @@
+- hosts: stapp01
+  become: yes
+  become_user: root
+  tasks:
+  - name: Ansible replace string example
+    replace:
+      path: /opt/dba/blog.txt
+      regexp: 'xFusionCorp'
+      replace: "Nautilus"
+
+- hosts: stapp02
+  become: yes
+  become_user: root
+  tasks:
+  - name: Ansible replace string example
+    replace:
+      path: /opt/dba/story.txt
+      regexp: 'Nautilus'
+      replace: "KodeKloud"
+
+- hosts: stapp03
+  become: yes
+  become_user: root
+  tasks:
+  - name: Ansible replace string example
+    replace:
+      path: /opt/dba/media.txt
+      regexp: 'KodeKloud'
+      replace: " xFusionCorp Industries"
+
