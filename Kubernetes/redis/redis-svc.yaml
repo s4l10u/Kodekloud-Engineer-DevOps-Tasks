@@ -7,12 +7,16 @@ metadata:
   name: redis-cluster-service
 spec:
   ports:
-  - name: "6379"
+  - name: "client"
     port: 6379
     protocol: TCP
     targetPort: 6379
+  - name: "gossip"
+    port: 16379
+    protocol: TCP
+    targetPort: 16379
   selector:
-    app: redis-cluster-service
+    app: redis-cluster
   type: ClusterIP
 status:
   loadBalancer: {}
