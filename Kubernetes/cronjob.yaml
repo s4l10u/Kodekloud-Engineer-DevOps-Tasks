@@ -14,5 +14,3 @@ spec:
             command: ["/bin/sleep"]
             args: ["5"]
           restartPolicy: Never
-
-
