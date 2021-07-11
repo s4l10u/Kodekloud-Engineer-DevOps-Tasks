@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: node-deployment-nautilus
+  name: node-deployment-nautilus
+  namespace: node-namespace-nautilus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-deployment-nautilus
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: node-deployment-nautilus
+    spec:
+      containers:
+      - image: gcr.io/kodekloud/centos-ssh-enabled:node
+        name: centos-ssh-enabled
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
