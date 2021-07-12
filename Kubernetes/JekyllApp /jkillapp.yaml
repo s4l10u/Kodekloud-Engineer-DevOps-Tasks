@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: jekyll-namespace-datacenter
+spec: {}
+status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name:  jekyll-site-datacenter
+  namespace:  jekyll-namespace-datacenter
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: jekyll-pod-datacenter
+  name: jekyll-pod-datacenter
+  namespace: jekyll-namespace-datacenter
+spec:
+initContainers:
+  - name: jekyll-init-datacenter
+    image: kodekloud/jekyll
+    command: [ "jekyll", "new", "/site" ]
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - mountPath: "/site"
+      name: site 
+  containers:
+  - image: kodekloud/jekyll-serve  
+    name: jekyll-container-datacenter
+    volumeMounts:
+    - mountPath: "/site"
+      name: site 
+    resources: {}
+  volumes:
+    - name: site
+      persistentVolumeClaim:
+        claimName: jekyll-site-datacenter
+
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+---
