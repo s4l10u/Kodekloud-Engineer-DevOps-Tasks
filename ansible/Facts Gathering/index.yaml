@@ -2,6 +2,7 @@
   become: yes
   become_user: root
   tasks:
+  
   - name: Install apache packages
     yum:
       name: httpd
