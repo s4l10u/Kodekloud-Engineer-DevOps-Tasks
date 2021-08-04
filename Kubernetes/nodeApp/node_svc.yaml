@@ -12,7 +12,7 @@ spec:
     nodePort: 30012
     port: 80
     protocol: TCP
-    targetPort: 80
+    targetPort: 8080
   selector:
     app: node-service-nautilus
   type: NodePort

@@ -5,7 +5,9 @@ metadata:
   name: jekyll-namespace-datacenter
 spec: {}
 status: {}
+
 ---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -19,6 +21,7 @@ spec:
       storage: 1Gi
 
 ---
+
 apiVersion: v1
 kind: Pod
 metadata:
@@ -28,7 +31,7 @@ metadata:
   name: jekyll-pod-datacenter
   namespace: jekyll-namespace-datacenter
 spec:
-initContainers:
+  initContainers:
   - name: jekyll-init-datacenter
     image: kodekloud/jekyll
     command: [ "jekyll", "new", "/site" ]
@@ -42,13 +45,29 @@ initContainers:
     volumeMounts:
     - mountPath: "/site"
       name: site 
-    resources: {}
   volumes:
-    - name: site
-      persistentVolumeClaim:
-        claimName: jekyll-site-datacenter
+  - name: site
+    persistentVolumeClaim:
+      claimName: jekyll-site-datacenter
 
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
-status: {}
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: jekyll-service-datacenter
+  name: jekyll-service-datacenter
+  namespace: jekyll-namespace-datacenter
+spec:
+  ports:
+  - name: "8080"
+    port: 8080
+    protocol: TCP
+    targetPort: 4000
+    nodePort: 31181
+  selector:
+    run: jekyll-pod-datacenter
+  type: NodePort
+status:
+  loadBalancer: {}

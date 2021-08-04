@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: volume-share-devops
+  name: volume-share-devops
+spec:
+  containers:
+  - args:
+    - /bin/sh
+    - -c
+    - sleep 4800
+    image: centos:latest
+    name: volume-container-devops-1
+    volumeMounts:
+    - name: volume-share
+      mountPath: /tmp/beta
+  - args:
+    - /bin/sh
+    - -c
+    - sleep 4800
+    image: centos:latest
+    name: volume-container-devops-2
+    volumeMounts:
+    - name: volume-share
+      mountPath: /tmp/demo
+  volumes:
+  - name: volume-share
+    emptyDir: {}
