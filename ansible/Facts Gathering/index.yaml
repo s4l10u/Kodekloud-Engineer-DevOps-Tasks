@@ -1,0 +1,27 @@
+- hosts: all
+  become: yes
+  become_user: root
+  tasks:
+  
+  - name: Install apache packages
+    yum:
+      name: httpd
+      state: present
+
+  - name: Create blockinfile file and add contents to it
+    blockinfile:
+      dest: /root/facts.txt
+      create: yes
+      block: |
+        Ansible managed node IP is {{ ansible_default_ipv4.address }}
+
+  - name:  copy file to remote server
+    copy:
+      src:  /root/facts.txt
+      remote_src: yes
+      dest: /var/www/html/index.html
+
+  - name: ensure httpd is running
+    service:
+      name: httpd
+      state: started

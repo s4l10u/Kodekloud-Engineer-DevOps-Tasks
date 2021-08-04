@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  web:
+    image: php:apache
+    container_name: php_web
+    volumes:
+      - /var/www/html:/var/www/html
+    ports:
+      - "5004:80"
+
+  DB:
+    image: mariadb:latest
+    container_name: mysql_web
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3306:3306" 
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: database_web
+      MYSQL_ROOT_PASSWORD: complexPassword
+      MYSQL_USER: kodekloud
+      MYSQL_PASSWORD: AnothercomplexPassword

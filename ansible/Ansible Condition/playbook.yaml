@@ -1,0 +1,31 @@
+- name: Copy file with owner and permissions
+  hosts: all
+  become: yes
+  tasks:
+  - name: "stapp01"
+    copy:
+        src: /usr/src/devops/blog.txt
+        dest: /opt/devops/blog.txt
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0744'
+    when:  inventory_hostname   == "stapp01"
+
+  - name: "stapp02"
+    copy:
+      src: /usr/src/devops/story.txt
+      dest: /opt/devops/story.txt
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+      mode: '0744'
+    when:   inventory_hostname  == "stapp02"
+
+  - name: "stapp03"
+    become: true
+    copy:
+      src: /usr/src/devops/media.txt
+      dest: /opt/devops/media.txt
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+      mode: '0744'
+    when: inventory_hostname == "stapp03"
