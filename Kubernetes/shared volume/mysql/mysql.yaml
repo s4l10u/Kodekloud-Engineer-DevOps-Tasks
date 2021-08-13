@@ -1,0 +1,135 @@
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+spec:
+  capacity:
+    storage: 250Mi
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: manuel
+  hostPath:
+    path: /var/mysql
+  persistentVolumeReclaimPolicy: Delete
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name:  mysql-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manuel
+  resources:
+    requests:
+      storage: 250Mi
+
+---
+apiVersion: v1
+data:
+  password: WVVJaWRoYjY2Nw==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: mysql-root-pass
+---
+apiVersion: v1
+data:
+  password: QjR6TmdIQTdZYQ==
+  username: a29kZWtsb3VkX3JveQ==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: mysql-user-pass
+---
+apiVersion: v1
+data:
+  database: a29kZWtsb3VkX2RiNg==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: mysql-db-url
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mysql-deployment
+  name: mysql-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-deployment
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mysql-deployment
+    spec:
+      containers:
+      - image: mysql:5.7
+        name: mysql
+        volumeMounts:
+        - mountPath: "/var/lib/mysql"
+          subPath: "mysql"
+          name: mysql-data
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-root-pass
+                key: password
+
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-root-pass
+                key: password
+
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: mysql-db-url
+                key: database
+
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: mysql-user-pass
+                key: username
+
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-user-pass
+                key: password
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mysql
+  name: mysql
+spec:
+  ports:
+  - name: "3306"
+    nodePort: 30007
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: mysql-deployment
+  type: NodePort
+status:
+  loadBalancer: {}
